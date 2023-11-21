@@ -45,6 +45,20 @@ public class Round {
         }
     }
 
+
+    private Action getPlayerAction() {
+        switch (this.player) {
+            case ROCK:
+                return Action.LOSE;
+            case PAPER:
+                return Action.DRAW;
+            case SCISSORS:
+                return Action.WIN;
+            default:
+                throw new IllegalStateException("Unexpected value: " + this.player);
+        }
+    }
+
     public Integer getScore() {
         final Integer WIN_WEIGHT = 6;
         final Integer DRAW_WEIGHT = 3;
@@ -59,12 +73,56 @@ public class Round {
         }
     }
 
-    private Integer getPlayerWeight() {
-        return determineSymbolWeight(this.player);
+    public Integer getPart2Score() {
+        Integer score = 0;
+        final Integer WIN_WEIGHT = 6;
+        final Integer DRAW_WEIGHT = 3;
+        final Integer LOSS_WEIGHT = 0;
+        Action action = getPlayerAction();
+        score += determineSymbolWeight(determinePlayerSymbol(action));
+
+        switch (action) {
+            case WIN:
+                score += WIN_WEIGHT;
+                break;
+            case LOSE:
+                score += LOSS_WEIGHT;
+                break;
+            case DRAW:
+                score += DRAW_WEIGHT;
+                break;
+        }
+
+        return score;
     }
 
-    private Integer getOpponentWeight() {
-        return determineSymbolWeight(this.opponent);
+
+    private Symbol determinePlayerSymbol(Action action) {
+        if (action == Action.WIN) {
+            switch (this.opponent) {
+                case ROCK:
+                    return Symbol.PAPER;
+                case PAPER:
+                    return Symbol.SCISSORS;
+                case SCISSORS:
+                    return Symbol.ROCK;
+            }
+        } else if (action == Action.LOSE) {
+            switch (this.opponent) {
+                case ROCK:
+                    return Symbol.SCISSORS;
+                case PAPER:
+                    return Symbol.ROCK;
+                case SCISSORS:
+                    return Symbol.PAPER;
+            }
+        }
+        return this.opponent;
+    }
+
+
+    private Integer getPlayerWeight() {
+        return determineSymbolWeight(this.player);
     }
 
     private Integer determineSymbolWeight(Symbol symbol) {

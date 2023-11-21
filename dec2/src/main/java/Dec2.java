@@ -5,8 +5,11 @@ import java.util.stream.IntStream;
 public class Dec2 {
     public static void main(String args[]) {
         String input = loadPuzzleInput("dec2.txt");
-        var bar = calculateScore(input);
-        System.out.println(bar);
+        var part1 = calculateScore(input);
+        System.out.println("Part 1 score: " + part1);
+
+        var part2 = part2score(input);
+        System.out.println("Part 2 score: " + part2);
     }
 
     public static Integer calculateScore(String input) {
@@ -16,6 +19,15 @@ public class Dec2 {
 
         Integer score = rounds.stream()
                 .mapToInt(round -> round.getScore())
+                .sum();
+
+        return score;
+    }
+
+    public static Integer part2score(String input) {
+        Integer score = Arrays.stream(input.split("\n"))
+                .map(Round::new)
+                .mapToInt(Round::getPart2Score)
                 .sum();
 
         return score;

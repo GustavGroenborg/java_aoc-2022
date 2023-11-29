@@ -102,4 +102,31 @@ public class RucksackTests {
             assertEquals(targets[i], outputs[i]);
     }
 
+
+    @Test
+    public void testFindCommonGroupItem() {
+        // Given
+        String[] input1 = {
+                "vJrwpWtwJgWrhcsFMMfFFhFp",
+                "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
+                "PmmdzqPrVvPwwTWBwg"
+        };
+        String[] input2 = {
+                "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
+                "ttgJtRGJQctTZtZT",
+                "CrZsJsPPZsGzwwsLwLmpwMDw"
+        };
+
+        Character target1 = 'r';
+        Character target2 = 'Z';
+
+        // When
+        Character output1 = Rucksack.findCommonGroupItem(input1);
+        Character output2 = Rucksack.findCommonGroupItem(input2);
+
+        // Then
+        assertEquals(target1, output1);
+        assertEquals(target2, output2);
+    }
+
 }

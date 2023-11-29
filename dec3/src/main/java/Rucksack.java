@@ -16,13 +16,31 @@ public class Rucksack {
     public Character findOneCommonItem() {
         char[] chars = this.compartment0.toCharArray();
 
-        for (int i = 0; i < this.compartment0.length(); i++) {
-            if (this.compartment1.indexOf(chars[i]) != -1 )
-                return Character.valueOf(chars[i]);
+        for (char c : chars) {
+            if (this.compartment1.indexOf(c) != -1)
+                return Character.valueOf(c);
         }
 
-        throw new Error("Found no common characters in: "
+        throw new Error("Found no common characters in rucksack compartments: "
                 + "\n" + this.compartment0
                 + "\n" + this.compartment1);
+    }
+
+
+    public static Character findCommonGroupItem(String[] group) {
+        if (group.length != 3)
+            throw new Error("group too long. Expected 3, got: " + group.length);
+
+        char[] chars = group[0].toCharArray();
+
+        for (char aChar : chars) {
+            if (group[1].indexOf(aChar) != -1 && group[2].indexOf(aChar) != -1)
+                return Character.valueOf(aChar);
+        }
+
+        throw new Error("Found no common characters in group:"
+                + "\n" + group[0]
+                + "\n" + group[1]
+                + "\n" + group[2]);
     }
 }

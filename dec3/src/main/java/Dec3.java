@@ -1,4 +1,5 @@
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,6 +10,9 @@ public class Dec3 {
 
         System.out.println("The sum of priorities appearing in both compartments is: "
                 + part1(input));
+
+        System.out.println("The sum of priorities of group items is: "
+                + part2(input));
     }
 
     public static String loadPuzzleInput(String day) {
@@ -37,21 +41,31 @@ public class Dec3 {
     }
 
 
-    public Integer findPrioritySumButDoItWithStyle(String input) {
-        /*
-        var prioritySum = Arrays.stream(input.split("\n"))
-                .map(Rucksack::new)
-                .filter(c -> c.compartment0.chars()
-                                .filter(ch -> c.compartment1.indexOf(ch) != -1)
-                                .d
-        /*
-        var prioritySum = compartment0.chars()
-                .filter(c -> compartment1.indexOf(c) != -1)
-                .mapToObj(Character::toChars)
-                .map(c -> Character.valueOf(c[0]))
-                .mapToInt(
+    public static Integer part2(String[] input) {
+        int sum = Dec3.groupStrings(input, 3).stream()
+                .map(Rucksack::findCommonGroupItem)
+                .mapToInt(Rucksack::computePriority)
+                .sum();
 
-         */
-        return 0;
+        return sum;
+    }
+
+
+    public static List<String[]> groupStrings(String[] strs, int num) {
+        List<String[]> result = new ArrayList<String[]>();
+        List<String> holder = new ArrayList<String>();
+        int count = 0;
+
+        for (String str : strs) {
+            count++;
+            holder.add(str);
+            if (count == num) {
+                result.add(holder.toArray(String[]::new));
+                holder.clear();
+                count = 0;
+            }
+        }
+
+        return result;
     }
 }

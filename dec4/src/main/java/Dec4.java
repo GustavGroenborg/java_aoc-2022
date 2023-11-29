@@ -9,6 +9,9 @@ public class Dec4 {
 
         System.out.println("One range fully contains the other in "
                 + Dec4.part1(input) + " " + "assignments.");
+
+        System.out.println("Ranges overlap in "
+                + part2(input) + " " + "assignment pairs");
     }
 
     public static int part1(String[] strings) {
@@ -19,6 +22,18 @@ public class Dec4 {
                         .toList())
                 .filter(ranges -> (ranges.get(0).containsRange(ranges.get(1))
                             || ranges.get(1).containsRange(ranges.get(0))))
+                .count();
+
+        return (int) count;
+    }
+
+    public static int part2(String[] strings) {
+        long count = Arrays.stream(strings)
+                .map(pair -> pair.split(","))
+                .map( pairs -> Arrays.stream(pairs)
+                        .map(Dec4::parseRange)
+                        .toList())
+                .filter(ranges -> ranges.get(0).isOverlappedBy(ranges.get(1)))
                 .count();
 
         return (int) count;

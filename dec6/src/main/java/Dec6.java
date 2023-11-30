@@ -9,11 +9,26 @@ public class Dec6 {
     public static void main(String[] args) {
         List<Character> puzzleInput = loadPuzzleInput();
 
-        System.out.println(part1(puzzleInput) + " " + "characters needs to be processed before the first start-of-packet marker is detected.");
+        System.out.println(
+                "Part 1:\n"
+                + part1(puzzleInput)
+                + " " + "characters needs to be processed before the first start-of-packet marker is detected.");
+
+        System.out.println(
+                "Part 2:\n"
+                + part2(puzzleInput)
+                + " " + "characters needs to be processed before the first start-of-packet marker is detected.");
+
     }
 
     public static int part1(List<Character> puzzleInput) {
         final int BUFFER_SIZE = 4;
+
+        return findFirstStartOfPacket(puzzleInput, BUFFER_SIZE);
+    }
+
+    public static int part2(List<Character> puzzleInput) {
+        final int BUFFER_SIZE = 14;
 
         return findFirstStartOfPacket(puzzleInput, BUFFER_SIZE);
     }
@@ -30,7 +45,7 @@ public class Dec6 {
             while (buffer.contains(nextChar))
                 buffer.removeFirst();
 
-            if (buffer.size() == 3 && !buffer.contains(nextChar))
+            if (buffer.size() == bufferSize - 1 && !buffer.contains(nextChar))
                 break;
 
             buffer.add(nextChar);

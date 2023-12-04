@@ -13,6 +13,10 @@ public class Dec7 {
         System.out.println("The sum of all directories below"
                 + " " + part1Limit
                 + " " + "is: " + part1(puzzleInput, part1Limit));
+
+        System.out.println("The size of the smallest directory"
+                + " that would free up enough space for the update is: "
+                + part2(puzzleInput));
     }
 
     public static String[] loadPuzzleInput() {
@@ -44,5 +48,26 @@ public class Dec7 {
         }
 
         return explored.stream().mapToInt(ElfDirectory::getSize).sum();
+    }
+
+    public static int part2(String[] pip) {
+        final int CAPACITY = 70_000_000;
+        final int UPDATE_SIZE = 30_000_000;
+        Parser parser = new Parser(pip);
+        int spaceNeeded = (parser.getRoot().getSize() + UPDATE_SIZE) - CAPACITY;
+        Visitor frontier = new Visitor();
+        parser.getRoot().accept(frontier);
+
+        ElfDirectory smallestDirectory = parser.getRoot();
+        while(!frontier.directories.isEmpty()) {
+            var v = frontier.directories.removeLast();
+            if (v.getSize() < smallestDirectory.getSize() && v.getSize() > spaceNeeded)
+                smallestDirectory = v;
+
+            for (var child : v.getChildren())
+                child.accept(frontier);
+        }
+
+        return smallestDirectory.getSize();
     }
 }
